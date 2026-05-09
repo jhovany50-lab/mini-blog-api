@@ -1,0 +1,17 @@
+openapi: 3.0.0
+info:
+  title: Mini Blog API
+  version: 1.0.0
+paths:
+  /authors:
+    get:
+      summary: Obtener autores
+      responses:
+        '200':
+          description: OK
+  /posts:
+    get:
+      summary: Obtener posts
+      responses:
+        '200':
+          description: OK
