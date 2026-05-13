@@ -4,8 +4,9 @@ const pool = require('./db');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
 
-const postsRoutes = require('./routes/posts.routes');
-const authorsRoutes = require('./routes/authors.routes');
+const routes = require('./routes');
+
+const errorHandler = require('./middlewares/errorHandler');
 
 const app = express();
 
@@ -32,29 +33,21 @@ const swaggerSpec = swaggerJsdoc(options);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-/* =========================
-   ROUTES
-========================= */
-
-app.use('/authors', authorsRoutes);
-app.use('/posts', postsRoutes);
-
-/* =========================
-   BASE
-========================= */
+app.use(routes);
 
 app.get('/', (req, res) => {
   res.send('API funcionando 🚀');
 });
 
-app.get('/db-test', async (req, res) => {
+app.get('/db-test', async (req, res, next) => { 
   try {
     const result = await pool.query('SELECT NOW()');
     res.json(result.rows);
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error en DB');
+    next(error); 
   }
 });
+
+app.use(errorHandler);
 
 module.exports = app;

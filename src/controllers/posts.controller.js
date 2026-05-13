@@ -1,77 +1,76 @@
 const service = require('../services/posts.service');
+const { validatePost } = require('../utils/validators');
 
-// Obtener todos los posts
-exports.getAll = async (req, res) => {
+exports.getAll = async (req, res, next) => {
   try {
     const data = await service.getAll();
     res.json(data);
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error obteniendo posts');
+    next(error);
   }
 };
 
-// Obtener post por ID
-exports.getById = async (req, res) => {
+exports.getById = async (req, res, next) => {
   try {
     const data = await service.getById(req.params.id);
-    if (!data) return res.status(404).send('No encontrado');
+
+    if (!data) {
+      throw { status: 404, message: 'Post no encontrado' };
+    }
+
     res.json(data);
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error obteniendo post');
+    next(error);
   }
 };
 
-// Obtener posts por author
-exports.getByAuthor = async (req, res) => {
+exports.getByAuthor = async (req, res, next) => {
   try {
     const data = await service.getByAuthor(req.params.authorId);
     res.json(data);
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error obteniendo posts del author');
+    next(error);
   }
 };
 
-// Crear post
-exports.create = async (req, res) => {
+exports.create = async (req, res, next) => {
   try {
-    const { title, content, author_id } = req.body;
-
-    if (!title || !content || !author_id) {
-      return res.status(400).send('Campos requeridos');
-    }
+    validatePost(req.body);
 
     const data = await service.create(req.body);
 
     res.status(201).json(data);
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error creando post');
+    next(error);
   }
 };
 
-// Actualizar post
-exports.update = async (req, res) => {
+exports.update = async (req, res, next) => {
   try {
+    validatePost(req.body);
+
     const data = await service.update(req.params.id, req.body);
-    if (!data) return res.status(404).send('No encontrado');
+
+    if (!data) {
+      throw { status: 404, message: 'Post no encontrado' };
+    }
+
     res.json(data);
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error actualizando post');
+    next(error);
   }
 };
 
-// Eliminar post
-exports.remove = async (req, res) => {
+exports.remove = async (req, res, next) => {
   try {
     const data = await service.remove(req.params.id);
-    if (!data) return res.status(404).send('No encontrado');
-    res.send('Eliminado');
+
+    if (!data) {
+      throw { status: 404, message: 'Post no encontrado' };
+    }
+
+    res.json({ message: 'Post eliminado correctamente' });
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error eliminando post');
+    next(error);
   }
 };

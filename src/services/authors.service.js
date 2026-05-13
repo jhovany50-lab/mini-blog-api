@@ -1,9 +1,5 @@
 const pool = require('../db');
 
-// =====================
-// AUTHORS CRUD
-// =====================
-
 exports.getAll = async () => {
   const result = await pool.query('SELECT * FROM authors');
   return result.rows;
@@ -40,10 +36,6 @@ exports.remove = async (id) => {
   );
   return result.rows[0];
 };
-
-// =====================
-// POSTS POR AUTHOR
-// =====================
 
 exports.getPostsByAuthor = async (authorId) => {
   const result = await pool.query(

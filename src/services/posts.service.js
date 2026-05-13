@@ -1,9 +1,5 @@
 const pool = require('../db');
 
-// =====================
-// POSTS CRUD
-// =====================
-
 exports.getAll = async () => {
   const result = await pool.query('SELECT * FROM posts');
   return result.rows;
@@ -29,11 +25,11 @@ exports.create = async ({ title, content, author_id }) => {
   const result = await pool.query(
     `INSERT INTO posts (title, content, author_id)
      VALUES ($1, $2, $3)
-     RETURNING *`, // 🔥 CLAVE
+     RETURNING *`,
     [title, content, author_id]
   );
 
-  return result.rows[0]; // 🔥 CLAVE
+  return result.rows[0];
 };
 
 exports.update = async (id, { title, content, author_id }) => {
