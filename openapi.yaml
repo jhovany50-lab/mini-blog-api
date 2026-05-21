@@ -1,17 +1,303 @@
 openapi: 3.0.0
+
 info:
   title: Mini Blog API
   version: 1.0.0
+  description: API REST para gestión de autores y posts
+
+servers:
+  - url: http://localhost:3000
+
 paths:
+
   /authors:
     get:
-      summary: Obtener autores
+      summary: Obtener todos los autores
       responses:
         '200':
-          description: OK
+          description: Lista de autores obtenida correctamente
+
+    post:
+      summary: Crear autor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+
+      responses:
+        '201':
+          description: Autor creado correctamente
+
+  /authors/{id}:
+    get:
+      summary: Obtener autor por ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: Autor encontrado
+
+        '400':
+          description: ID inválido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: ID inválido
+
+        '404':
+          description: Autor no encontrado
+
+    put:
+      summary: Actualizar autor
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+
+      responses:
+        '200':
+          description: Autor actualizado correctamente
+
+        '400':
+          description: ID inválido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: ID inválido
+
+        '404':
+          description: Autor no encontrado
+
+    delete:
+      summary: Eliminar autor
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: Autor eliminado correctamente
+
+        '400':
+          description: ID inválido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: ID inválido
+
+        '404':
+          description: Autor no encontrado
+
+  /authors/{id}/posts:
+    get:
+      summary: Obtener posts de un autor
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: Posts obtenidos correctamente
+
+        '400':
+          description: ID inválido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: ID inválido
+
   /posts:
     get:
-      summary: Obtener posts
+      summary: Obtener todos los posts
       responses:
         '200':
-          description: OK
+          description: Lista de posts obtenida correctamente
+
+    post:
+      summary: Crear post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                content:
+                  type: string
+                author_id:
+                  type: integer
+
+      responses:
+        '201':
+          description: Post creado correctamente
+
+  /posts/{id}:
+    get:
+      summary: Obtener post por ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: Post encontrado
+
+        '400':
+          description: ID inválido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: ID inválido
+
+        '404':
+          description: Post no encontrado
+
+    put:
+      summary: Actualizar post
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                content:
+                  type: string
+                author_id:
+                  type: integer
+
+      responses:
+        '200':
+          description: Post actualizado correctamente
+
+        '400':
+          description: ID inválido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: ID inválido
+
+        '404':
+          description: Post no encontrado
+
+    delete:
+      summary: Eliminar post
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: Post eliminado correctamente
+
+        '400':
+          description: ID inválido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: ID inválido
+
+        '404':
+          description: Post no encontrado
+
+  /posts/author/{authorId}:
+    get:
+      summary: Obtener posts por autor
+      parameters:
+        - in: path
+          name: authorId
+          required: true
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: Posts obtenidos correctamente
+
+        '400':
+          description: ID de autor inválido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: ID de autor inválido

@@ -1,5 +1,4 @@
 const service = require('../services/posts.service');
-const { validatePost } = require('../utils/validators');
 
 exports.getAll = async (req, res, next) => {
   try {
@@ -35,7 +34,6 @@ exports.getByAuthor = async (req, res, next) => {
 
 exports.create = async (req, res, next) => {
   try {
-    validatePost(req.body);
 
     const data = await service.create(req.body);
 
@@ -47,7 +45,6 @@ exports.create = async (req, res, next) => {
 
 exports.update = async (req, res, next) => {
   try {
-    validatePost(req.body);
 
     const data = await service.update(req.params.id, req.body);
 
