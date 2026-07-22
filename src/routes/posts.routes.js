@@ -8,8 +8,12 @@ const {
 } = require('../utils/validators');
 
 router.get('/', controller.getAll);
-router.get('/:id', validateId, controller.getById);
+
+// PRIMERO la ruta específica
 router.get('/author/:authorId', validateId, controller.getByAuthor);
+
+// DESPUÉS la dinámica
+router.get('/:id', validateId, controller.getById);
 
 router.post('/', validatePost, controller.create);
 
