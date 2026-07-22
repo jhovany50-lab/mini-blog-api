@@ -14,11 +14,27 @@ exports.getById = async (id) => {
 };
 
 exports.create = async ({ name, email, bio }) => {
-  const result = await pool.query(
-    'INSERT INTO authors (name, email, bio) VALUES ($1, $2, $3) RETURNING *',
-    [name, email, bio]
-  );
-  return result.rows[0];
+  try {
+    const result = await pool.query(
+      `INSERT INTO authors (name, email, bio)
+       VALUES ($1, $2, $3)
+       RETURNING *`,
+      [name, email, bio]
+    );
+
+    return result.rows[0];
+
+  } catch (error) {
+
+    if (error.code === '23505') {
+      throw {
+        status: 409,
+        message: 'El email ya existe'
+      };
+    }
+
+    throw error;
+  }
 };
 
 exports.update = async (id, { name, email, bio }) => {
