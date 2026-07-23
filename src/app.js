@@ -40,6 +40,4 @@ app.use((req, res) => {
 // Middleware de manejo de errores
 app.use(errorHandler);
 
-console.log(app._router.stack.map(layer => layer.route?.path || layer.name));
-
 module.exports = app;
