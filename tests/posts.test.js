@@ -73,6 +73,26 @@ describe('Posts API', () => {
   });
 
   // ============================
+  // POST /posts (400 - FK)
+  // ============================
+  it('POST /posts debería responder 400 si el autor no existe', async () => {
+
+    const newPost = {
+      title: `Post ${Date.now()}`,
+      content: 'Contenido de prueba',
+      author_id: 99999
+    };
+
+    const res = await request(app)
+      .post('/posts')
+      .send(newPost);
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.error).toBe('El autor especificado no existe');
+
+  });
+
+  // ============================
   // POST /posts (400)
   // ============================
   it('POST /posts debería responder 400 si faltan campos', async () => {
@@ -105,6 +125,34 @@ describe('Posts API', () => {
     expect(res.statusCode).toBe(200);
     expect(res.body.title).toBe(updatedPost.title);
     expect(res.body.content).toBe(updatedPost.content);
+
+  });
+
+  // ============================
+  // PUT /posts/:id (400 - FK)
+  // ============================
+  it('PUT /posts/:id debería responder 400 si el autor no existe', async () => {
+
+    const created = await request(app)
+      .post('/posts')
+      .send({
+        title: `Temporal ${Date.now()}`,
+        content: 'Contenido temporal',
+        author_id: 3
+      });
+
+    const updatedPost = {
+      title: 'Actualizado',
+      content: 'Contenido actualizado',
+      author_id: 99999
+    };
+
+    const res = await request(app)
+      .put(`/posts/${created.body.id}`)
+      .send(updatedPost);
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.error).toBe('El autor especificado no existe');
 
   });
 

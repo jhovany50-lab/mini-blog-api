@@ -1,303 +1,615 @@
+# Archivo OpenAPI generado
+
 openapi: 3.0.0
 
 info:
   title: Mini Blog API
   version: 1.0.0
-  description: API REST para gestión de autores y posts
+  description: |
+    API REST desarrollada con Node.js, Express y PostgreSQL.
+
+    Permite administrar autores y publicaciones mediante un CRUD completo.
+
+    Incluye:
+
+      • Arquitectura por capas
+      • PostgreSQL
+      • Swagger/OpenAPI
+      • Jest + Supertest
+      • Manejo centralizado de errores
+
+  contact:
+    name: Jhovany Rodríguez
+    url: https://github.com/jhovany50-lab
 
 servers:
   - url: http://localhost:3000
+    description: Servidor local
+
+tags:
+  - name: Authors
+    description: Operaciones relacionadas con autores
+
+  - name: Posts
+    description: Operaciones relacionadas con publicaciones
 
 paths:
 
+  #################################################
+  # AUTHORS
+  #################################################
+
   /authors:
+
     get:
+      tags:
+        - Authors
       summary: Obtener todos los autores
+
       responses:
         '200':
           description: Lista de autores obtenida correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Author'
 
     post:
-      summary: Crear autor
+      tags:
+        - Authors
+
+      summary: Crear un nuevo autor
+
       requestBody:
         required: true
+
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                email:
-                  type: string
+              $ref: '#/components/schemas/AuthorInput'
 
       responses:
+
         '201':
           description: Autor creado correctamente
 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+        '409':
+          description: Email ya registrado
+
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  #################################################
+
   /authors/{id}:
+
     get:
+
+      tags:
+        - Authors
+
       summary: Obtener autor por ID
+
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/AuthorIdParam'
 
       responses:
+
         '200':
           description: Autor encontrado
 
-        '400':
-          description: ID inválido
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: ID inválido
+                $ref: '#/components/schemas/Author'
 
         '404':
-          description: Autor no encontrado
+          $ref: '#/components/responses/AuthorNotFound'
 
     put:
-      summary: Actualizar autor
+
+      tags:
+        - Authors
+
+      summary: Actualizar un autor
+
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/AuthorId'
 
       requestBody:
+
         required: true
+
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                email:
-                  type: string
+              $ref: '#/components/schemas/AuthorInput'
 
       responses:
-        '200':
-          description: Autor actualizado correctamente
 
-        '400':
-          description: ID inválido
+        '200':
+          description: Autor actualizado
+
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: ID inválido
+                $ref: '#/components/schemas/Author'
 
         '404':
-          description: Autor no encontrado
+          $ref: '#/components/responses/AuthorNotFound'
 
     delete:
-      summary: Eliminar autor
+
+      tags:
+        - Authors
+
+      summary: Eliminar un autor
+
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/AuthorId'
 
       responses:
+
         '200':
           description: Autor eliminado correctamente
 
-        '400':
-          description: ID inválido
           content:
             application/json:
               schema:
                 type: object
+
                 properties:
-                  error:
+
+                  message:
                     type: string
-                    example: ID inválido
+                    example: Autor eliminado correctamente
 
         '404':
-          description: Autor no encontrado
+          $ref: '#/components/responses/AuthorNotFound'
+
+  #################################################
 
   /authors/{id}/posts:
+
     get:
-      summary: Obtener posts de un autor
+
+      tags:
+        - Authors
+
+      summary: Obtener todos los posts de un autor
+
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/AuthorId'
 
       responses:
-        '200':
-          description: Posts obtenidos correctamente
 
-        '400':
-          description: ID inválido
+        '200':
+
+          description: Lista de publicaciones
+
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: ID inválido
+
+                type: array
+
+                items:
+                  $ref: '#/components/schemas/Post'
+
+        '404':
+          $ref: '#/components/responses/AuthorNotFound'
+
+  #################################################
+  # POSTS
+  #################################################
 
   /posts:
+
     get:
+
+      tags:
+        - Posts
+
       summary: Obtener todos los posts
+
       responses:
+
         '200':
-          description: Lista de posts obtenida correctamente
+
+          description: Lista de publicaciones
+
+          content:
+
+            application/json:
+
+              schema:
+
+                type: array
+
+                items:
+                  $ref: '#/components/schemas/Post'
 
     post:
-      summary: Crear post
+
+      tags:
+        - Posts
+
+      summary: Crear un nuevo post
+
       requestBody:
+
         required: true
+
         content:
+
           application/json:
+
             schema:
-              type: object
-              properties:
-                title:
-                  type: string
-                content:
-                  type: string
-                author_id:
-                  type: integer
+              $ref: '#/components/schemas/PostInput'
 
       responses:
+
         '201':
-          description: Post creado correctamente
+
+          description: Publicación creada correctamente
+
+          content:
+
+            application/json:
+
+              schema:
+                $ref: '#/components/schemas/Post'
+
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  #################################################
 
   /posts/{id}:
+
     get:
+
+      tags:
+        - Posts
+
       summary: Obtener post por ID
+
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/PostId'
 
       responses:
-        '200':
-          description: Post encontrado
 
-        '400':
-          description: ID inválido
+        '200':
+
+          description: Publicación encontrada
+
           content:
+
             application/json:
+
               schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: ID inválido
+                $ref: '#/components/schemas/Post'
 
         '404':
-          description: Post no encontrado
+          $ref: '#/components/responses/PostNotFound'
 
     put:
-      summary: Actualizar post
+
+      tags:
+        - Posts
+
+      summary: Actualizar un post
+
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/PostId'
 
       requestBody:
+
         required: true
+
         content:
+
           application/json:
+
             schema:
-              type: object
-              properties:
-                title:
-                  type: string
-                content:
-                  type: string
-                author_id:
-                  type: integer
+              $ref: '#/components/schemas/PostInput'
 
       responses:
-        '200':
-          description: Post actualizado correctamente
 
-        '400':
-          description: ID inválido
+        '200':
+
+          description: Publicación actualizada
+
           content:
+
             application/json:
+
               schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: ID inválido
+                $ref: '#/components/schemas/Post'
 
         '404':
-          description: Post no encontrado
+          $ref: '#/components/responses/PostNotFound'
 
     delete:
-      summary: Eliminar post
+
+      tags:
+        - Posts
+
+      summary: Eliminar un post
+
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/PostId'
 
       responses:
-        '200':
-          description: Post eliminado correctamente
 
-        '400':
-          description: ID inválido
+        '200':
+
+          description: Publicación eliminada
+
           content:
+
             application/json:
+
               schema:
+
                 type: object
+
                 properties:
-                  error:
+
+                  message:
                     type: string
-                    example: ID inválido
+                    example: Post eliminado correctamente
 
         '404':
-          description: Post no encontrado
+          $ref: '#/components/responses/PostNotFound'
+
+  #################################################
 
   /posts/author/{authorId}:
+
     get:
-      summary: Obtener posts por autor
+
+      tags:
+        - Posts
+
+      summary: Obtener publicaciones por autor
+
       parameters:
-        - in: path
-          name: authorId
-          required: true
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/AuthorId'
 
       responses:
-        '200':
-          description: Posts obtenidos correctamente
 
-        '400':
-          description: ID de autor inválido
+        '200':
+
+          description: Lista de publicaciones
+
           content:
+
             application/json:
+
               schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: ID de autor inválido
+
+                type: array
+
+                items:
+                  $ref: '#/components/schemas/Post'
+
+        '404':
+          $ref: '#/components/responses/AuthorNotFound'
+
+#################################################
+# COMPONENTS
+#################################################
+
+components:
+
+  #################################################
+  # PARAMETERS
+  #################################################
+
+  parameters:
+
+    AuthorId:
+      in: path
+      name: id
+      required: true
+
+      schema:
+        type: integer
+
+      example: 1
+
+    AuthorIdParam:
+      in: path
+      name: authorId
+      required: true
+      example: 1
+      schema:
+        type: integer
+
+    PostId:
+      in: path
+      name: id
+      required: true
+
+      schema:
+        type: integer
+
+      example: 1
+
+  #################################################
+  # SCHEMAS
+  #################################################
+
+  schemas:
+
+    Author:
+
+      type: object
+
+      properties:
+
+        id:
+          type: integer
+          example: 1
+
+        name:
+          type: string
+          example: Juan Pérez
+
+        email:
+          type: string
+          example: juan@mail.com
+
+        bio:
+          type: string
+          example: Backend Developer
+
+    AuthorInput:
+
+      type: object
+
+      required:
+        - name
+        - email
+
+      properties:
+
+        name:
+          type: string
+          example: Juan Pérez
+
+        email:
+          type: string
+          example: juan@mail.com
+
+        bio:
+          type: string
+          example: Backend Developer
+
+    Post:
+
+      type: object
+
+      properties:
+
+        id:
+          type: integer
+          example: 1
+
+        title:
+          type: string
+          example: Mi primer post
+
+        content:
+          type: string
+          example: Contenido del artículo...
+
+        author_id:
+          type: integer
+          example: 1
+
+        published:
+          type: boolean
+          example: true
+
+    PostInput:
+
+      type: object
+
+      required:
+        - title
+        - content
+        - author_id
+
+      properties:
+
+        title:
+          type: string
+          example: Mi primer post
+
+        content:
+          type: string
+          example: Contenido del artículo...
+
+        author_id:
+          type: integer
+          example: 1
+
+    Error:
+
+      type: object
+
+      properties:
+
+        error:
+          type: string
+          example: Autor no encontrado
+
+  #################################################
+  # RESPONSES
+  #################################################
+
+  responses:
+
+    BadRequest:
+
+      description: Solicitud inválida
+
+      content:
+
+        application/json:
+
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    InternalError:
+
+      description: Error interno del servidor
+
+      content:
+
+        application/json:
+
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    AuthorNotFound:
+
+      description: Autor no encontrado
+
+      content:
+
+        application/json:
+
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    PostNotFound:
+
+      description: Post no encontrado
+
+      content:
+
+        application/json:
+
+          schema:
+            $ref: '#/components/schemas/Error'

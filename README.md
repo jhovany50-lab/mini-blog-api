@@ -1,48 +1,79 @@
 # 🧠 Mini Blog API
 
-API REST profesional desarrollada con **Node.js, Express y PostgreSQL** para la gestión de autores y posts.
+API REST desarrollada con **Node.js**, **Express** y **PostgreSQL** para la gestión de autores y publicaciones (posts).
 
-Incluye arquitectura por capas, documentación interactiva con Swagger y pruebas automatizadas.
-
----
-
-## 🚀 Features
-
-* CRUD completo de autores
-* CRUD completo de posts
-* Relación autores ↔ posts
-* Documentación con Swagger UI
-* Tests automatizados con Jest
-* Arquitectura modular escalable
+El proyecto implementa una arquitectura por capas, documentación interactiva con Swagger/OpenAPI, manejo centralizado de errores y pruebas automatizadas con Jest y Supertest.
 
 ---
 
-## 🛠️ Tecnologías
+# 📑 Tabla de contenido
 
-* Node.js
-* Express
-* PostgreSQL
-* Swagger (swagger-ui-express, swagger-jsdoc)
-* Jest + Supertest
+- Características
+- Tecnologías
+- Instalación
+- Variables de entorno
+- Base de datos
+- Ejecución
+- Documentación
+- Pruebas
+- Endpoints
+- Arquitectura
+- Estructura del proyecto
+- Scripts disponibles
+- Uso de IA
+- Autor
 
 ---
 
-## 📦 Instalación
+# 🚀 Características
+
+- CRUD completo de autores
+- CRUD completo de publicaciones
+- Relación entre autores y publicaciones
+- PostgreSQL como base de datos
+- Arquitectura por capas
+- Middleware para manejo centralizado de errores
+- Validación de datos
+- Documentación Swagger/OpenAPI
+- Pruebas automatizadas con Jest + Supertest
+
+---
+
+# 🛠 Tecnologías
+
+- Node.js
+- Express
+- PostgreSQL
+- pg
+- dotenv
+- Swagger UI Express
+- Swagger JSDoc
+- Jest
+- Supertest
+
+---
+
+# 📦 Instalación
+
+Clonar el repositorio:
 
 ```bash
 git clone https://github.com/jhovany50-lab/mini-blog-api.git
+
 cd mini-blog-api
+
 npm install
 ```
 
 ---
 
-## ⚙️ Variables de entorno
+# ⚙ Variables de entorno
 
-Crear archivo `.env`:
+Crear un archivo `.env` en la raíz del proyecto.
 
 ```env
 PORT=3000
+
 DB_HOST=localhost
 DB_PORT=5432
 DB_USER=postgres
@@ -50,101 +81,216 @@ DB_PASSWORD=tu_password
 DB_NAME=mini_blog
 ```
 
+También se incluye un archivo `.env.example`.
+
 ---
 
-## 🗄️ Base de datos
+# 🗄 Base de datos
+
+Crear la base de datos:
 
 ```sql
 CREATE DATABASE mini_blog;
 ```
 
+Ejecutar los scripts SQL:
+
 ```bash
-psql -U postgres -d mini_blog -f sql/schema.sql
-psql -U postgres -d mini_blog -f sql/seed.sql
+psql -U postgres -d mini_blog -f src/db/schema.sql
+
+psql -U postgres -d mini_blog -f src/db/seed.sql
 ```
 
 ---
 
-## ▶️ Ejecutar proyecto
+# ▶ Ejecutar el proyecto
+
+Modo desarrollo
 
 ```bash
 npm run dev
 ```
 
-👉 API disponible en:
+Modo producción
+
+```bash
+npm start
+```
+
+La API estará disponible en:
+
+```
 http://localhost:3000
+```
 
 ---
 
-## 📚 Documentación (Swagger)
+# 📚 Documentación Swagger
 
+Una vez iniciado el servidor:
+
+```
 http://localhost:3000/api-docs
+```
 
 ---
 
-## 🧪 Tests
+# 🧪 Ejecutar pruebas
 
 ```bash
 npm test
 ```
 
----
+Actualmente el proyecto cuenta con pruebas automatizadas para:
 
-## 📌 Endpoints principales
-
-### 👤 Authors
-
-* GET /authors
-* GET /authors/{id}
-* GET /authors/{id}/posts
-* POST /authors
-* PUT /authors/{id}
-* DELETE /authors/{id}
-
-### 📝 Posts
-
-* GET /posts
-* GET /posts/{id}
-* GET /posts/author/{authorId}
-* POST /posts
-* PUT /posts/{id}
-* DELETE /posts/{id}
+- Authors
+- Posts
 
 ---
 
-## 🧩 Arquitectura
+# 📌 Endpoints
+
+## Authors
+
+| Método | Endpoint |
+|---------|----------|
+| GET | /authors |
+| GET | /authors/:id |
+| GET | /authors/:id/posts |
+| POST | /authors |
+| PUT | /authors/:id |
+| DELETE | /authors/:id |
+
+---
+
+## Posts
+
+| Método | Endpoint |
+|---------|----------|
+| GET | /posts |
+| GET | /posts/:id |
+| GET | /posts/author/:authorId |
+| POST | /posts |
+| PUT | /posts/:id |
+| DELETE | /posts/:id |
+
+---
+
+# 🏗 Arquitectura
+
+El proyecto utiliza una arquitectura por capas.
 
 ```
-src/
-├── controllers/
-├── routes/
-├── services/
-├── db/
-└── app.js
+Cliente
+
+↓
+
+Routes
+
+↓
+
+Controllers
+
+↓
+
+Services
+
+↓
+
+PostgreSQL
 ```
 
 ---
 
-## 🚀 Deployment
+# 📁 Estructura del proyecto
 
-Pendiente (Railway / Render)
+```
+mini-blog-api/
+
+├── src/
+│   ├── controllers/
+│   ├── db/
+│   │   ├── index.js
+│   │   ├── schema.sql
+│   │   └── seed.sql
+│   ├── middlewares/
+│   ├── routes/
+│   ├── services/
+│   ├── utils/
+│   └── app.js
+│
+├── tests/
+│   ├── authors.test.js
+│   └── posts.test.js
+│
+├── openapi.yaml
+├── server.js
+├── package.json
+├── .env.example
+└── README.md
+```
 
 ---
 
-## 🤖 Uso de IA
+# 📜 Scripts disponibles
 
-Se utilizó ChatGPT como apoyo para:
+```bash
+npm run dev
+```
 
-* Resolución de errores
-* Generación de documentación
-* Mejores prácticas
+Inicia el servidor con Nodemon.
 
-El código fue comprendido y adaptado manualmente.
+```bash
+npm start
+```
+
+Inicia el servidor en modo producción.
+
+```bash
+npm test
+```
+
+Ejecuta todas las pruebas automatizadas.
 
 ---
 
-## 💼 Autor
+# 🤖 Uso de IA
 
-Jhovany Rodríguez
+Durante el desarrollo se utilizó ChatGPT como herramienta de apoyo para:
+
+- Resolución de errores
+- Documentación
+- Revisión de arquitectura
+- Mejores prácticas
+- Generación de casos de prueba
+
+Todo el código fue comprendido, revisado y adaptado manualmente antes de incorporarse al proyecto.
+
+---
+
+# 📌 Estado del proyecto
+
+✅ Proyecto finalizado.
+
+Incluye:
+
+- CRUD completo de Authors
+- CRUD completo de Posts
+- Swagger
+- PostgreSQL
+- Arquitectura por capas
+- Manejo de errores
+- Validaciones
+- Pruebas automatizadas
+
+---
+
+# 👨‍💻 Autor
+
+**Jhovany Rodríguez**
+
 Backend Developer (en formación)
 
+GitHub:
+
+https://github.com/jhovany50-lab

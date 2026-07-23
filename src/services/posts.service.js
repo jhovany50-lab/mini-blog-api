@@ -10,6 +10,7 @@ exports.getById = async (id) => {
     'SELECT * FROM posts WHERE id = $1',
     [id]
   );
+
   return result.rows[0];
 };
 
@@ -18,35 +19,66 @@ exports.getByAuthor = async (authorId) => {
     'SELECT * FROM posts WHERE author_id = $1',
     [authorId]
   );
+
   return result.rows;
 };
 
 exports.create = async ({ title, content, author_id }) => {
-  const result = await pool.query(
-    `INSERT INTO posts (title, content, author_id)
-     VALUES ($1, $2, $3)
-     RETURNING *`,
-    [title, content, author_id]
-  );
+  try {
+    const result = await pool.query(
+      `INSERT INTO posts (title, content, author_id)
+       VALUES ($1, $2, $3)
+       RETURNING *`,
+      [title, content, author_id]
+    );
 
-  return result.rows[0];
+    return result.rows[0];
+
+  } catch (error) {
+
+    // El autor no existe (Foreign Key)
+    if (error.code === '23503') {
+      throw {
+        status: 400,
+        message: 'El autor especificado no existe'
+      };
+    }
+
+    throw error;
+  }
 };
 
 exports.update = async (id, { title, content, author_id }) => {
-  const result = await pool.query(
-    `UPDATE posts 
-     SET title=$1, content=$2, author_id=$3 
-     WHERE id=$4 
-     RETURNING *`,
-    [title, content, author_id, id]
-  );
+  try {
+    const result = await pool.query(
+      `UPDATE posts
+       SET title = $1,
+           content = $2,
+           author_id = $3
+       WHERE id = $4
+       RETURNING *`,
+      [title, content, author_id, id]
+    );
 
-  return result.rows[0];
+    return result.rows[0];
+
+  } catch (error) {
+
+    // El autor no existe (Foreign Key)
+    if (error.code === '23503') {
+      throw {
+        status: 400,
+        message: 'El autor especificado no existe'
+      };
+    }
+
+    throw error;
+  }
 };
 
 exports.remove = async (id) => {
   const result = await pool.query(
-    'DELETE FROM posts WHERE id=$1 RETURNING *',
+    'DELETE FROM posts WHERE id = $1 RETURNING *',
     [id]
   );
 

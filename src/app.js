@@ -1,39 +1,43 @@
 const express = require('express');
-const pool = require('./db');
-
-const swaggerUi = require('swagger-ui-express');
-const YAML = require('yamljs');
 const path = require('path');
+const YAML = require('yamljs');
+const swaggerUi = require('swagger-ui-express');
 
 const routes = require('./routes');
-
 const errorHandler = require('./middlewares/errorHandler');
 
 const app = express();
 
+// Middleware para parsear JSON
 app.use(express.json());
 
+// Swagger / OpenAPI
 const swaggerSpec = YAML.load(
   path.join(__dirname, '../openapi.yaml')
 );
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
+// Rutas de la API
 app.use(routes);
 
+// Ruta principal
 app.get('/', (req, res) => {
-  res.send('API funcionando 🚀');
+  res.json({
+    message: 'Mini Blog API',
+    version: '1.0.0',
+    documentation: '/api-docs'
+  });
 });
 
-app.get('/db-test', async (req, res, next) => {
-  try {
-    const result = await pool.query('SELECT NOW()');
-    res.json(result.rows);
-  } catch (error) {
-    next(error);
-  }
+// Middleware para rutas no encontradas
+app.use((req, res) => {
+  res.status(404).json({
+    error: 'Ruta no encontrada'
+  });
 });
 
+// Middleware de manejo de errores
 app.use(errorHandler);
 
 module.exports = app;
