@@ -17,4 +17,15 @@ const pool = process.env.DATABASE_URL
       port: process.env.DB_PORT,
     });
 
+pool.query(`
+  SELECT current_database(),
+         current_schema(),
+         current_user
+`)
+.then(({ rows }) => {
+  console.log('=== DATABASE INFO ===');
+  console.table(rows);
+})
+.catch(console.error);
+
 module.exports = pool;
