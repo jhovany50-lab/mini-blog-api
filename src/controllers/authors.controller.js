@@ -1,6 +1,6 @@
-const service = require('../services/authors.service');
+import service from '../services/authors.service.js';
 
-exports.getAll = async (req, res, next) => {
+const getAll = async (req, res, next) => {
   try {
     const data = await service.getAll();
     res.json(data);
@@ -9,7 +9,7 @@ exports.getAll = async (req, res, next) => {
   }
 };
 
-exports.getById = async (req, res, next) => {
+const getById = async (req, res, next) => {
   try {
     const data = await service.getById(req.params.id);
 
@@ -24,7 +24,7 @@ exports.getById = async (req, res, next) => {
   }
 };
 
-exports.getPostsByAuthor = async (req, res, next) => {
+const getPostsByAuthor = async (req, res, next) => {
   try {
     const data = await service.getPostsByAuthor(req.params.id);
 
@@ -35,7 +35,7 @@ exports.getPostsByAuthor = async (req, res, next) => {
   }
 };
 
-exports.create = async (req, res, next) => {
+const create = async (req, res, next) => {
   try {
 
     const data = await service.create(req.body);
@@ -47,7 +47,7 @@ exports.create = async (req, res, next) => {
   }
 };
 
-exports.update = async (req, res, next) => {
+const update = async (req, res, next) => {
   try {
 
     const data = await service.update(
@@ -66,7 +66,7 @@ exports.update = async (req, res, next) => {
   }
 };
 
-exports.remove = async (req, res, next) => {
+const remove = async (req, res, next) => {
   try {
 
     const data = await service.remove(req.params.id);
@@ -82,4 +82,13 @@ exports.remove = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+export default {
+  getAll,
+  getById,
+  getPostsByAuthor,
+  create,
+  update,
+  remove
 };

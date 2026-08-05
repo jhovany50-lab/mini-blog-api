@@ -1,7 +1,7 @@
 // utils/validators.js
 
 // 🔹 Valida que un ID sea entero positivo válido
-exports.validateId = (req, res, next) => {
+export const validateId = (req, res, next) => {
   const { id, authorId } = req.params;
 
   const value = Number(id || authorId);
@@ -16,7 +16,7 @@ exports.validateId = (req, res, next) => {
 };
 
 // 🔹 Valida creación y actualización de POST
-exports.validatePost = (req, res, next) => {
+export const validatePost = (req, res, next) => {
   const { title, content, author_id } = req.body;
 
   // Campos requeridos
@@ -62,7 +62,7 @@ exports.validatePost = (req, res, next) => {
 };
 
 // 🔹 Valida creación y actualización de AUTHOR
-exports.validateAuthor = (req, res, next) => {
+export const validateAuthor = (req, res, next) => {
   const { name, email } = req.body;
 
   // Campos requeridos

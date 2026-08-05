@@ -1,11 +1,13 @@
-const express = require('express');
-const router = express.Router();
+import express from 'express';
 
-const controller = require('../controllers/posts.controller');
-const {
+import controller from '../controllers/posts.controller.js';
+
+import {
   validateId,
   validatePost
-} = require('../utils/validators');
+} from '../utils/validators.js';
+
+const router = express.Router();
 
 router.get('/', controller.getAll);
 
@@ -21,4 +23,4 @@ router.put('/:id', validateId, controller.update);
 
 router.delete('/:id', validateId, controller.remove);
 
-module.exports = router;
+export default router;

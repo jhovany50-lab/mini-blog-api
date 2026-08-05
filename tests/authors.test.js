@@ -1,11 +1,11 @@
-const request = require('supertest');
-const app = require('../src/app');
+import { describe, it, expect, afterAll } from 'vitest';
+import request from 'supertest';
+
+import app from '../src/app.js';
+import pool from '../src/db/index.js';
 
 describe('Authors API', () => {
 
-  // ============================
-  // GET /authors
-  // ============================
   it('GET /authors debería responder 200', async () => {
     const res = await request(app).get('/authors');
 
@@ -13,9 +13,6 @@ describe('Authors API', () => {
     expect(Array.isArray(res.body)).toBe(true);
   });
 
-  // ============================
-  // POST /authors
-  // ============================
   it('POST /authors debería crear un autor', async () => {
     const res = await request(app)
       .post('/authors')
@@ -30,9 +27,6 @@ describe('Authors API', () => {
     expect(res.body.name).toBe('Test User');
   });
 
-  // ============================
-  // POST /authors (400)
-  // ============================
   it('POST /authors debería responder 400 si faltan campos', async () => {
     const res = await request(app)
       .post('/authors')
@@ -43,9 +37,6 @@ describe('Authors API', () => {
     expect(res.statusCode).toBe(400);
   });
 
-  // ============================
-  // POST /authors (409)
-  // ============================
   it('POST /authors debería responder 409 si el email ya existe', async () => {
 
     const email = `duplicado${Date.now()}@mail.com`;
@@ -68,36 +59,24 @@ describe('Authors API', () => {
 
     expect(res.statusCode).toBe(409);
     expect(res.body.error).toBe('El email ya existe');
-
   });
 
-  // ============================
-  // GET /authors/:id
-  // ============================
   it('GET /authors/:id debería responder 200', async () => {
 
     const res = await request(app).get('/authors/1');
 
     expect(res.statusCode).toBe(200);
     expect(res.body).toHaveProperty('id');
-
   });
 
-  // ============================
-  // GET /authors/:id (404)
-  // ============================
   it('GET /authors/:id inexistente debería responder 404', async () => {
 
     const res = await request(app).get('/authors/99999');
 
     expect(res.statusCode).toBe(404);
     expect(res.body.error).toBe('Autor no encontrado');
-
   });
 
-  // ============================
-  // PUT /authors/:id
-  // ============================
   it('PUT /authors/:id debería actualizar un autor', async () => {
 
     const updatedAuthor = {
@@ -114,12 +93,8 @@ describe('Authors API', () => {
     expect(res.body.name).toBe(updatedAuthor.name);
     expect(res.body.email).toBe(updatedAuthor.email);
     expect(res.body.bio).toBe(updatedAuthor.bio);
-
   });
 
-  // ============================
-  // PUT /authors/:id (404)
-  // ============================
   it('PUT /authors/:id inexistente debería responder 404', async () => {
 
     const updatedAuthor = {
@@ -134,12 +109,8 @@ describe('Authors API', () => {
 
     expect(res.statusCode).toBe(404);
     expect(res.body.error).toBe('Autor no encontrado');
-
   });
 
-  // ============================
-  // DELETE /authors/:id
-  // ============================
   it('DELETE /authors/:id debería eliminar un autor', async () => {
 
     const created = await request(app)
@@ -155,12 +126,8 @@ describe('Authors API', () => {
 
     expect(res.statusCode).toBe(200);
     expect(res.body.message).toBe('Autor eliminado correctamente');
-
   });
 
-  // ============================
-  // DELETE /authors/:id (404)
-  // ============================
   it('DELETE /authors/:id inexistente debería responder 404', async () => {
 
     const res = await request(app)
@@ -168,12 +135,10 @@ describe('Authors API', () => {
 
     expect(res.statusCode).toBe(404);
     expect(res.body.error).toBe('Autor no encontrado');
-
   });
 
 });
 
 afterAll(async () => {
-  const pool = require('../src/db');
   await pool.end();
 });

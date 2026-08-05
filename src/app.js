@@ -1,10 +1,14 @@
-const express = require('express');
-const path = require('path');
-const YAML = require('yamljs');
-const swaggerUi = require('swagger-ui-express');
+import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import YAML from 'yamljs';
+import swaggerUi from 'swagger-ui-express';
 
-const routes = require('./routes');
-const errorHandler = require('./middlewares/errorHandler');
+import routes from './routes/index.js';
+import errorHandler from './middlewares/errorHandler.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -40,4 +44,4 @@ app.use((req, res) => {
 // Middleware de manejo de errores
 app.use(errorHandler);
 
-module.exports = app;
+export default app;

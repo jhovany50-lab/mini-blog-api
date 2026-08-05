@@ -1,12 +1,13 @@
-const express = require('express');
-const router = express.Router();
+import express from 'express';
 
-const controller = require('../controllers/authors.controller');
+import controller from '../controllers/authors.controller.js';
 
-const {
+import {
   validateId,
   validateAuthor
-} = require('../utils/validators');
+} from '../utils/validators.js';
+
+const router = express.Router();
 
 router.get('/', controller.getAll);
 
@@ -29,4 +30,4 @@ router.put(
 
 router.delete('/:id', validateId, controller.remove);
 
-module.exports = router;
+export default router;

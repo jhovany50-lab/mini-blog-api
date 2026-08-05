@@ -1,11 +1,11 @@
-const pool = require('../db');
+import pool from '../db/index.js';
 
-exports.getAll = async () => {
+const getAll = async () => {
   const result = await pool.query('SELECT * FROM posts');
   return result.rows;
 };
 
-exports.getById = async (id) => {
+const getById = async (id) => {
   const result = await pool.query(
     'SELECT * FROM posts WHERE id = $1',
     [id]
@@ -14,7 +14,7 @@ exports.getById = async (id) => {
   return result.rows[0];
 };
 
-exports.getByAuthor = async (authorId) => {
+const getByAuthor = async (authorId) => {
   const result = await pool.query(
     'SELECT * FROM posts WHERE author_id = $1',
     [authorId]
@@ -23,7 +23,7 @@ exports.getByAuthor = async (authorId) => {
   return result.rows;
 };
 
-exports.create = async ({ title, content, author_id }) => {
+const create = async ({ title, content, author_id }) => {
   try {
     const result = await pool.query(
       `INSERT INTO posts (title, content, author_id)
@@ -36,7 +36,6 @@ exports.create = async ({ title, content, author_id }) => {
 
   } catch (error) {
 
-    // El autor no existe (Foreign Key)
     if (error.code === '23503') {
       throw {
         status: 400,
@@ -48,7 +47,7 @@ exports.create = async ({ title, content, author_id }) => {
   }
 };
 
-exports.update = async (id, { title, content, author_id }) => {
+const update = async (id, { title, content, author_id }) => {
   try {
     const result = await pool.query(
       `UPDATE posts
@@ -64,7 +63,6 @@ exports.update = async (id, { title, content, author_id }) => {
 
   } catch (error) {
 
-    // El autor no existe (Foreign Key)
     if (error.code === '23503') {
       throw {
         status: 400,
@@ -76,11 +74,20 @@ exports.update = async (id, { title, content, author_id }) => {
   }
 };
 
-exports.remove = async (id) => {
+const remove = async (id) => {
   const result = await pool.query(
     'DELETE FROM posts WHERE id = $1 RETURNING *',
     [id]
   );
 
   return result.rows[0];
+};
+
+export default {
+  getAll,
+  getById,
+  getByAuthor,
+  create,
+  update,
+  remove
 };

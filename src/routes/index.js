@@ -1,10 +1,11 @@
-const express = require('express');
-const router = express.Router();
+import express from 'express';
 
-const postsRoutes = require('./posts.routes');
-const authorsRoutes = require('./authors.routes');
+import postsRoutes from './posts.routes.js';
+import authorsRoutes from './authors.routes.js';
+
+const router = express.Router();
 
 router.use('/posts', postsRoutes);
 router.use('/authors', authorsRoutes);
 
-module.exports = router;
+export default router;

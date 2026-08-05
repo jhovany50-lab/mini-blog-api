@@ -1,59 +1,39 @@
-const request = require('supertest');
-const app = require('../src/app');
+import { describe, it, expect, afterAll } from 'vitest';
+import request from 'supertest';
+
+import app from '../src/app.js';
+import pool from '../src/db/index.js';
 
 describe('Posts API', () => {
 
-  // ============================
-  // GET /posts
-  // ============================
   it('GET /posts debería responder 200', async () => {
-
     const res = await request(app).get('/posts');
 
     expect(res.statusCode).toBe(200);
     expect(Array.isArray(res.body)).toBe(true);
-
   });
 
-  // ============================
-  // GET /posts/:id
-  // ============================
   it('GET /posts/:id debería responder 200', async () => {
-
     const res = await request(app).get('/posts/1');
 
     expect(res.statusCode).toBe(200);
     expect(res.body).toHaveProperty('id');
-
   });
 
-  // ============================
-  // GET /posts/:id (404)
-  // ============================
   it('GET /posts/:id inexistente debería responder 404', async () => {
-
     const res = await request(app).get('/posts/99999');
 
     expect(res.statusCode).toBe(404);
     expect(res.body.error).toBe('Post no encontrado');
-
   });
 
-  // ============================
-  // GET /posts/author/:authorId
-  // ============================
   it('GET /posts/author/:authorId debería responder 200', async () => {
-
     const res = await request(app).get('/posts/author/3');
 
     expect(res.statusCode).toBe(200);
     expect(Array.isArray(res.body)).toBe(true);
-
   });
 
-  // ============================
-  // POST /posts
-  // ============================
   it('POST /posts debería crear un post', async () => {
 
     const newPost = {
@@ -72,9 +52,6 @@ describe('Posts API', () => {
 
   });
 
-  // ============================
-  // POST /posts (400 - FK)
-  // ============================
   it('POST /posts debería responder 400 si el autor no existe', async () => {
 
     const newPost = {
@@ -92,9 +69,6 @@ describe('Posts API', () => {
 
   });
 
-  // ============================
-  // POST /posts (400)
-  // ============================
   it('POST /posts debería responder 400 si faltan campos', async () => {
 
     const res = await request(app)
@@ -107,9 +81,6 @@ describe('Posts API', () => {
 
   });
 
-  // ============================
-  // PUT /posts/:id
-  // ============================
   it('PUT /posts/:id debería actualizar un post', async () => {
 
     const updatedPost = {
@@ -128,9 +99,6 @@ describe('Posts API', () => {
 
   });
 
-  // ============================
-  // PUT /posts/:id (400 - FK)
-  // ============================
   it('PUT /posts/:id debería responder 400 si el autor no existe', async () => {
 
     const created = await request(app)
@@ -156,9 +124,6 @@ describe('Posts API', () => {
 
   });
 
-  // ============================
-  // PUT /posts/:id (404)
-  // ============================
   it('PUT /posts/:id inexistente debería responder 404', async () => {
 
     const updatedPost = {
@@ -176,9 +141,6 @@ describe('Posts API', () => {
 
   });
 
-  // ============================
-  // DELETE /posts/:id
-  // ============================
   it('DELETE /posts/:id debería eliminar un post', async () => {
 
     const created = await request(app)
@@ -197,9 +159,6 @@ describe('Posts API', () => {
 
   });
 
-  // ============================
-  // DELETE /posts/:id (404)
-  // ============================
   it('DELETE /posts/:id inexistente debería responder 404', async () => {
 
     const res = await request(app)
@@ -213,6 +172,5 @@ describe('Posts API', () => {
 });
 
 afterAll(async () => {
-  const pool = require('../src/db');
   await pool.end();
 });
