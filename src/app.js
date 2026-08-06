@@ -1,24 +1,14 @@
 import express from 'express';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import YAML from 'yamljs';
-import swaggerUi from 'swagger-ui-express';
+
+import { swaggerUi, swaggerSpec } from './docs/swagger.js';
 
 import routes from './routes/index.js';
 import errorHandler from './middlewares/errorHandler.js';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const app = express();
 
 // Middleware para parsear JSON
 app.use(express.json());
-
-// Swagger / OpenAPI
-const swaggerSpec = YAML.load(
-  path.join(__dirname, '../openapi.yaml')
-);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
