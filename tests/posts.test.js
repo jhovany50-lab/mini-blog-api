@@ -2,7 +2,7 @@ import { describe, it, expect, afterAll } from 'vitest';
 import request from 'supertest';
 
 import app from '../src/app.js';
-import pool from '../src/db/index.js';
+import pool from '../src/config/db.js';
 
 describe('Posts API', () => {
 
