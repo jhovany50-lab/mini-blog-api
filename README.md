@@ -1,98 +1,131 @@
-# 🧠 Mini Blog API
+🧠 Mini Blog API
 
-API REST desarrollada con **Node.js**, **Express** y **PostgreSQL** para la gestión de autores y publicaciones (posts).
+API REST desarrollada con Node.js, Express y PostgreSQL para la gestión de autores y publicaciones (posts).
 
-Implementa una arquitectura por capas, documentación interactiva con Swagger/OpenAPI, manejo centralizado de errores, validaciones, pruebas automatizadas y despliegue en producción mediante Render.
+El proyecto implementa una arquitectura por capas, documentación interactiva con Swagger/OpenAPI, validaciones, manejo centralizado de errores, pruebas automatizadas y configuración para despliegue en producción.
 
-![Node.js](https://img.shields.io/badge/Node.js-22.x-339933?logo=node.js&logoColor=white)
-![Express](https://img.shields.io/badge/Express-5.x-000000?logo=express&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-336791?logo=postgresql&logoColor=white)
-![OpenAPI](https://img.shields.io/badge/OpenAPI-3.0-6BA539?logo=swagger&logoColor=white)
-![Render](https://img.shields.io/badge/Deploy-Render-46E3B7?logo=render&logoColor=black)
-![License](https://img.shields.io/badge/License-MIT-yellow)
+🚀 Demo
 
----
+API en producción
 
-# 🚀 Demo
+El deployment oficial para evaluación se realizará mediante Railway.
 
-### API en producción
+URL de producción: pendiente de configurar.
 
-https://mini-blog-api-li5g.onrender.com
+Documentación Swagger
 
-### Documentación Swagger
+URL de Swagger en producción: pendiente de configurar.
 
-https://mini-blog-api-li5g.onrender.com/api-docs
+📑 Tabla de contenido
 
----
+Características
 
-# 📑 Tabla de contenido
+Tecnologías
 
-- [Características](#-características)
-- [Tecnologías](#-tecnologías)
-- [Instalación](#-instalación)
-- [Variables de entorno](#-variables-de-entorno)
-- [Base de datos](#-base-de-datos)
-- [Ejecución](#-ejecutar-el-proyecto)
-- [Documentación Swagger](#-documentación-swagger)
-- [Pruebas](#-ejecutar-pruebas)
-- [Endpoints](#-endpoints)
-- [Arquitectura](#-arquitectura)
-- [Estructura del proyecto](#-estructura-del-proyecto)
-- [Scripts disponibles](#-scripts-disponibles)
-- [Uso de IA](#-uso-de-ia)
-- [Estado del proyecto](#-estado-del-proyecto)
-- [Autor](#-autor)
+Instalación
 
----
+Variables de entorno
 
-# 🚀 Características
+Base de datos
 
-- CRUD completo de autores.
-- CRUD completo de publicaciones.
-- Relación entre autores y publicaciones.
-- PostgreSQL como base de datos relacional.
-- Arquitectura por capas.
-- Middleware para manejo centralizado de errores.
-- Validación de datos.
-- Documentación interactiva con Swagger/OpenAPI.
-- Pruebas automatizadas con Jest y Supertest.
-- Despliegue en producción mediante Render.
+Ejecutar el proyecto
 
----
+Documentación Swagger
 
-# 🛠 Tecnologías
+Pruebas
 
-- Node.js
-- Express
-- PostgreSQL
-- pg
-- dotenv
-- Swagger UI Express
-- YAMLJS
-- Jest
-- Supertest
+Endpoints
 
----
+Arquitectura
 
-# 📦 Instalación
+Estructura del proyecto
 
-Clonar el repositorio:
+Scripts disponibles
 
-```bash
+Deployment
+
+Uso de IA
+
+Estado del proyecto
+
+Licencia
+
+Autor
+
+🚀 Características
+
+CRUD completo de autores.
+
+CRUD completo de publicaciones.
+
+Relación entre autores y publicaciones.
+
+PostgreSQL como base de datos relacional.
+
+Arquitectura por capas.
+
+Middleware para manejo centralizado de errores.
+
+Validación de datos.
+
+Manejo de errores HTTP.
+
+Documentación interactiva con Swagger/OpenAPI.
+
+Pruebas automatizadas con Vitest y Supertest.
+
+Configuración independiente para Vitest.
+
+Configuración para entorno local y producción.
+
+Soporte para conexión mediante DATABASE_URL.
+
+Despliegue en producción.
+
+🛠 Tecnologías
+
+Node.js
+
+Express
+
+PostgreSQL
+
+pg
+
+dotenv
+
+Swagger UI Express
+
+Swagger JSDoc
+
+YAMLJS
+
+Vitest
+
+Supertest
+
+Nodemon
+
+📦 Instalación
+
+1. Clonar el repositorio
+
 git clone https://github.com/jhovany50-lab/mini-blog-api.git
+
+2. Entrar al proyecto
 
 cd mini-blog-api
 
+3. Instalar las dependencias
+
 npm install
-```
 
----
+⚙️ Variables de entorno
 
-# ⚙ Variables de entorno
+Crear un archivo .env en la raíz del proyecto.
 
-Crear un archivo `.env` en la raíz del proyecto.
+Para desarrollo local se pueden utilizar las variables individuales de PostgreSQL:
 
-```env
 PORT=3000
 
 DB_HOST=localhost
@@ -102,128 +135,248 @@ DB_PASSWORD=tu_password
 DB_NAME=mini_blog
 
 DATABASE_URL=
-```
 
-También se incluye un archivo `.env.example`.
+También se incluye un archivo .env.example como referencia para configurar el entorno.
 
-Cuando la variable `DATABASE_URL` está definida, la aplicación se conecta automáticamente a la base de datos de producción (Render).
+Conexión mediante DATABASE_URL
 
----
+Cuando DATABASE_URL está definida, la aplicación utiliza esta variable para establecer la conexión con PostgreSQL.
 
-# 🗄 Base de datos
+Esto permite utilizar una única cadena de conexión en servicios de despliegue como Railway.
 
-Crear la base de datos:
+Cuando DATABASE_URL no está definida, la aplicación utiliza las variables individuales:
 
-```sql
+DB_HOST
+DB_PORT
+DB_USER
+DB_PASSWORD
+DB_NAME
+
+🗄️ Base de datos
+
+El proyecto utiliza PostgreSQL como sistema de gestión de base de datos.
+
+Crear la base de datos
+
 CREATE DATABASE mini_blog;
-```
 
-Ejecutar los scripts SQL:
+Crear las tablas
 
-```bash
-psql -U postgres -d mini_blog -f src/db/schema.sql
+El esquema se encuentra en:
 
-psql -U postgres -d mini_blog -f src/db/seed.sql
-```
+sql/schema.sql
 
----
+Ejecutar:
 
-# ▶ Ejecutar el proyecto
+psql -U postgres -d mini_blog -f sql/schema.sql
+
+Cargar datos iniciales
+
+Los datos de prueba se encuentran en:
+
+sql/seed.sql
+
+Ejecutar:
+
+psql -U postgres -d mini_blog -f sql/seed.sql
+
+Relación entre las entidades
+
+El modelo utiliza una relación uno a muchos (1):
+
+Authors
+   │
+   │ 1
+   │
+   └──────────< Posts
+                  N
+
+Cada publicación pertenece a un autor mediante la clave foránea author_id.
+
+El esquema incluye restricciones como:
+
+Primary Key.
+
+Foreign Key.
+
+NOT NULL.
+
+UNIQUE.
+
+Relación entre autores y publicaciones.
+
+▶️ Ejecutar el proyecto
 
 Modo desarrollo
 
-```bash
 npm run dev
-```
+
+Inicia el servidor utilizando Nodemon.
 
 Modo producción
 
-```bash
 npm start
-```
 
-La API estará disponible en:
+La API estará disponible localmente en:
 
-```
 http://localhost:3000
-```
 
----
+📚 Documentación Swagger
 
-# 🌐 Producción
+La documentación interactiva está disponible localmente en:
 
-La aplicación también se encuentra desplegada en Render.
-
-API
-
-```
-https://mini-blog-api-li5g.onrender.com
-```
-
-Swagger
-
-```
-https://mini-blog-api-li5g.onrender.com/api-docs
-```
-
----
-
-# 📚 Documentación Swagger
-
-Una vez iniciado el servidor:
-
-```
 http://localhost:3000/api-docs
-```
 
----
+La especificación OpenAPI se encuentra en:
 
-# 🧪 Ejecutar pruebas
+openapi.yaml
 
-```bash
+Swagger permite consultar y probar los endpoints disponibles de la API.
+
+🧪 Ejecutar pruebas
+
+El proyecto utiliza Vitest y Supertest.
+
+Todas las pruebas
+
 npm test
-```
 
-Actualmente el proyecto cuenta con pruebas automatizadas para:
+Modo watch
 
-- Authors
-- Posts
+npm run test:watch
 
----
+Las pruebas se encuentran en:
 
-# 📌 Endpoints
+tests/
+├── authors.test.js
+└── posts.test.js
 
-## Authors
+Actualmente el proyecto cuenta con:
 
-| Método | Endpoint |
-|---------|----------|
-| GET | /authors |
-| GET | /authors/:id |
-| GET | /authors/:id/posts |
-| POST | /authors |
-| PUT | /authors/:id |
-| DELETE | /authors/:id |
+10 pruebas para Authors
 
----
+12 pruebas para Posts
 
-## Posts
+22 pruebas automatizadas en total
 
-| Método | Endpoint |
-|---------|----------|
-| GET | /posts |
-| GET | /posts/:id |
-| GET | /posts/author/:authorId |
-| POST | /posts |
-| PUT | /posts/:id |
-| DELETE | /posts/:id |
+Las pruebas cubren operaciones CRUD y casos de error, incluyendo:
 
----
+Obtener recursos.
 
-# 🏗 Arquitectura
+Crear recursos.
 
-El proyecto sigue una arquitectura por capas.
+Actualizar recursos.
 
-```
+Eliminar recursos.
+
+Campos obligatorios.
+
+Recursos inexistentes.
+
+Emails duplicados.
+
+Autores inexistentes.
+
+Respuestas HTTP esperadas.
+
+La configuración de Vitest se encuentra en:
+
+vitest.config.js
+
+📌 Endpoints
+
+Authors
+
+Método
+
+Endpoint
+
+Descripción
+
+GET
+
+/authors
+
+Obtener todos los autores
+
+GET
+
+/authors/:id
+
+Obtener un autor por ID
+
+GET
+
+/authors/:id/posts
+
+Obtener publicaciones de un autor
+
+POST
+
+/authors
+
+Crear un nuevo autor
+
+PUT
+
+/authors/:id
+
+Actualizar un autor
+
+DELETE
+
+/authors/:id
+
+Eliminar un autor
+
+Posts
+
+Método
+
+Endpoint
+
+Descripción
+
+GET
+
+/posts
+
+Obtener todas las publicaciones
+
+GET
+
+/posts/:id
+
+Obtener una publicación por ID
+
+GET
+
+/posts/author/:authorId
+
+Obtener publicaciones de un autor
+
+POST
+
+/posts
+
+Crear una nueva publicación
+
+PUT
+
+/posts/:id
+
+Actualizar una publicación
+
+DELETE
+
+/posts/:id
+
+Eliminar una publicación
+
+🏗️ Arquitectura
+
+El proyecto utiliza una arquitectura por capas para separar responsabilidades y facilitar el mantenimiento.
+
 Cliente
    │
    ▼
@@ -237,25 +390,55 @@ Services
    │
    ▼
 PostgreSQL
-```
 
----
+Routes
 
-# 📁 Estructura del proyecto
+Define los endpoints y dirige las solicitudes hacia los controllers.
 
-```
+Controllers
+
+Gestiona las solicitudes HTTP y respuestas. Utiliza async/await y try/catch para enviar errores al middleware global mediante next(error).
+
+Services
+
+Contiene la lógica de las operaciones sobre autores y publicaciones y la interacción con PostgreSQL.
+
+Config
+
+La conexión con PostgreSQL está centralizada en:
+
+src/config/db.js
+
+Se utiliza Pool de PostgreSQL para gestionar las conexiones.
+
+Middlewares
+
+El manejo centralizado de errores se encuentra en:
+
+src/middlewares/errorHandler.js
+
+📁 Estructura del proyecto
+
 mini-blog-api/
-
+│
+├── sql/
+│   ├── schema.sql
+│   └── seed.sql
+│
 ├── src/
-│   ├── controllers/
-│   ├── db/
-│   │   ├── index.js
-│   │   ├── schema.sql
-│   │   └── seed.sql
+│   ├── config/
+│   │   └── db.js
+│   ├── docs/
+│   │   └── swagger.js
 │   ├── middlewares/
+│   │   └── errorHandler.js
 │   ├── routes/
+│   │   ├── authorsRoutes.js
+│   │   ├── postsRoutes.js
+│   │   └── index.js
 │   ├── services/
-│   ├── utils/
+│   │   ├── authors.service.js
+│   │   └── posts.service.js
 │   └── app.js
 │
 ├── tests/
@@ -264,79 +447,123 @@ mini-blog-api/
 │
 ├── openapi.yaml
 ├── server.js
+├── vitest.config.js
 ├── package.json
+├── package-lock.json
 ├── .env.example
+├── .gitignore
 └── README.md
-```
 
----
+El archivo .env contiene información sensible y no debe subirse al repositorio. Se proporciona .env.example como referencia.
 
-# 📜 Scripts disponibles
+📜 Scripts disponibles
 
-```bash
+Desarrollo
+
 npm run dev
-```
 
 Inicia el servidor con Nodemon.
 
-```bash
+Producción
+
 npm start
-```
 
-Inicia el servidor en modo producción.
+Inicia el servidor con Node.js.
 
-```bash
+Pruebas
+
 npm test
-```
 
 Ejecuta todas las pruebas automatizadas.
 
----
+Pruebas en modo watch
 
-# 🤖 Uso de IA
+npm run test:watch
+
+Ejecuta Vitest en modo observación y vuelve a ejecutar las pruebas cuando detecta cambios.
+
+🌐 Deployment
+
+El proyecto será desplegado en Railway para el entorno de producción, de acuerdo con los requerimientos del proyecto.
+
+La aplicación utiliza DATABASE_URL para facilitar la conexión con la base de datos PostgreSQL del servicio de hosting.
+
+API en producción
+
+URL de Railway: pendiente de configurar.
+
+Swagger en producción
+
+URL de Swagger: pendiente de configurar.
+
+Una vez realizado y verificado el deployment, las URLs serán actualizadas en esta sección.
+
+🤖 Uso de IA
 
 Durante el desarrollo se utilizó ChatGPT como herramienta de apoyo para:
 
-- Resolución de errores.
-- Revisión de arquitectura.
-- Documentación.
-- Mejores prácticas.
-- Generación de casos de prueba.
+Resolución de errores.
+
+Revisión de arquitectura.
+
+Documentación.
+
+Mejores prácticas.
+
+Generación y revisión de casos de prueba.
+
+Análisis de estructura del proyecto.
 
 Todo el código fue comprendido, revisado y adaptado manualmente antes de incorporarse al proyecto.
 
----
+📌 Estado del proyecto
 
-# 📌 Estado del proyecto
-
-✅ Versión estable **v1.0.0**
+✅ Versión estable v1.0.0
 
 Incluye:
 
-- CRUD completo de Authors.
-- CRUD completo de Posts.
-- PostgreSQL.
-- Swagger/OpenAPI.
-- Arquitectura por capas.
-- Validaciones.
-- Manejo centralizado de errores.
-- Pruebas automatizadas.
-- Despliegue en Render.
+CRUD completo de Authors.
 
----
+CRUD completo de Posts.
 
-# 📄 Licencia
+Relación entre Authors y Posts.
+
+PostgreSQL.
+
+Pool de conexiones.
+
+Arquitectura por capas.
+
+Validaciones.
+
+Manejo centralizado de errores.
+
+Swagger/OpenAPI.
+
+22 pruebas automatizadas.
+
+Vitest.
+
+Supertest.
+
+Configuración de Vitest.
+
+Variables de entorno para desarrollo y producción.
+
+Scripts SQL de configuración y datos iniciales.
+
+Deployment preparado para Railway.
+
+📄 Licencia
 
 Este proyecto fue desarrollado con fines educativos y de aprendizaje.
 
----
+👨‍💻 Autor
 
-# 👨‍💻 Autor
-
-**Jhovany Rodríguez**
+Jhovany Rodríguez
 
 Backend Developer (en formación)
 
-GitHub
+GitHub:
 
 https://github.com/jhovany50-lab
