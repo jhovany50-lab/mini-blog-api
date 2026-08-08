@@ -26,6 +26,9 @@ servers:
   - url: http://localhost:3000
     description: Servidor local
 
+  - url: https://mini-blog-api-production-246e.up.railway.app
+    description: Servidor de producción  
+
 tags:
   - name: Authors
     description: Operaciones relacionadas con autores
