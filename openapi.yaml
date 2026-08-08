@@ -442,7 +442,7 @@ components:
 
     AuthorIdParam:
       in: path
-      name: authorId
+      name: id
       required: true
       example: 1
       schema:
