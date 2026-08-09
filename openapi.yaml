@@ -396,7 +396,7 @@ paths:
       summary: Obtener publicaciones por autor
 
       parameters:
-        - $ref: '#/components/parameters/AuthorId'
+        - $ref: '#/components/parameters/PostAuthorId'
 
       responses:
 
@@ -443,6 +443,14 @@ components:
     AuthorIdParam:
       in: path
       name: id
+      required: true
+      example: 1
+      schema:
+        type: integer
+
+    PostAuthorId:
+      in: path
+      name: authorId
       required: true
       example: 1
       schema:
