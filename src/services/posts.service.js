@@ -23,19 +23,22 @@ const getByAuthor = async (authorId) => {
   return result.rows;
 };
 
-const create = async ({ title, content, author_id }) => {
+const create = async ({
+  title,
+  content,
+  author_id,
+  published = false
+}) => {
   try {
     const result = await pool.query(
-      `INSERT INTO posts (title, content, author_id)
-       VALUES ($1, $2, $3)
+      `INSERT INTO posts (title, content, author_id, published)
+       VALUES ($1, $2, $3, $4)
        RETURNING *`,
-      [title, content, author_id]
+      [title, content, author_id, published]
     );
 
     return result.rows[0];
-
   } catch (error) {
-
     if (error.code === '23503') {
       throw {
         status: 400,
