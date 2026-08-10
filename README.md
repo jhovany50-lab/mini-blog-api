@@ -8,13 +8,17 @@ El proyecto implementa una arquitectura por capas, documentación interactiva co
 
 API en producción
 
-El deployment oficial para evaluación se realizará mediante Railway.
+El proyecto está desplegado en Railway para el entorno de producción.
 
-URL de producción: pendiente de configurar.
+URL de producción:
+
+https://mini-blog-api-production-246e.up.railway.app
 
 Documentación Swagger
 
-URL de Swagger en producción: pendiente de configurar.
+Swagger en producción:
+
+https://mini-blog-api-production-246e.up.railway.app/api-docs
 
 📑 Tabla de contenido
 
@@ -80,7 +84,7 @@ Configuración para entorno local y producción.
 
 Soporte para conexión mediante DATABASE_URL.
 
-Despliegue en producción.
+Despliegue en producción mediante Railway.
 
 🛠 Tecnologías
 
@@ -147,10 +151,16 @@ Esto permite utilizar una única cadena de conexión en servicios de despliegue 
 Cuando DATABASE_URL no está definida, la aplicación utiliza las variables individuales:
 
 DB_HOST
+
 DB_PORT
+
 DB_USER
+
 DB_PASSWORD
+
 DB_NAME
+
+El archivo .env contiene información sensible y no debe subirse al repositorio. Se proporciona .env.example como referencia.
 
 🗄️ Base de datos
 
@@ -189,7 +199,7 @@ Authors
    │ 1
    │
    └──────────< Posts
-                  N
+                 N
 
 Cada publicación pertenece a un autor mediante la clave foránea author_id.
 
@@ -227,11 +237,15 @@ La documentación interactiva está disponible localmente en:
 
 http://localhost:3000/api-docs
 
-La especificación OpenAPI se encuentra en:
+La documentación OpenAPI también se encuentra en:
 
 openapi.yaml
 
 Swagger permite consultar y probar los endpoints disponibles de la API.
+
+Swagger en producción
+
+https://mini-blog-api-production-246e.up.railway.app/api-docs
 
 🧪 Ejecutar pruebas
 
@@ -255,9 +269,9 @@ Actualmente el proyecto cuenta con:
 
 10 pruebas para Authors
 
-12 pruebas para Posts
+15 pruebas para Posts
 
-22 pruebas automatizadas en total
+25 pruebas automatizadas en total
 
 Las pruebas cubren operaciones CRUD y casos de error, incluyendo:
 
@@ -276,6 +290,8 @@ Recursos inexistentes.
 Emails duplicados.
 
 Autores inexistentes.
+
+Validación del campo published.
 
 Respuestas HTTP esperadas.
 
@@ -304,12 +320,6 @@ GET
 /authors/:id
 
 Obtener un autor por ID
-
-GET
-
-/authors/:id/posts
-
-Obtener publicaciones de un autor
 
 POST
 
@@ -417,6 +427,18 @@ El manejo centralizado de errores se encuentra en:
 
 src/middlewares/errorHandler.js
 
+Utils
+
+Las validaciones de datos se encuentran en:
+
+src/utils/validators.js
+
+Docs
+
+La configuración de Swagger se encuentra en:
+
+src/docs/swagger.js
+
 📁 Estructura del proyecto
 
 mini-blog-api/
@@ -428,17 +450,29 @@ mini-blog-api/
 ├── src/
 │   ├── config/
 │   │   └── db.js
+│   │
+│   ├── controllers/
+│   │   ├── authors.controller.js
+│   │   └── posts.controller.js
+│   │
 │   ├── docs/
 │   │   └── swagger.js
+│   │
 │   ├── middlewares/
 │   │   └── errorHandler.js
+│   │
 │   ├── routes/
-│   │   ├── authorsRoutes.js
-│   │   ├── postsRoutes.js
-│   │   └── index.js
+│   │   ├── authors.routes.js
+│   │   ├── index.js
+│   │   └── posts.routes.js
+│   │
 │   ├── services/
 │   │   ├── authors.service.js
 │   │   └── posts.service.js
+│   │
+│   ├── utils/
+│   │   └── validators.js
+│   │
 │   └── app.js
 │
 ├── tests/
@@ -484,19 +518,19 @@ Ejecuta Vitest en modo observación y vuelve a ejecutar las pruebas cuando detec
 
 🌐 Deployment
 
-El proyecto será desplegado en Railway para el entorno de producción, de acuerdo con los requerimientos del proyecto.
+El proyecto está desplegado en Railway para el entorno de producción.
 
 La aplicación utiliza DATABASE_URL para facilitar la conexión con la base de datos PostgreSQL del servicio de hosting.
 
 API en producción
 
-URL de Railway: pendiente de configurar.
+https://mini-blog-api-production-246e.up.railway.app
 
 Swagger en producción
 
-URL de Swagger: pendiente de configurar.
+https://mini-blog-api-production-246e.up.railway.app/api-docs
 
-Una vez realizado y verificado el deployment, las URLs serán actualizadas en esta sección.
+El deployment fue verificado mediante las pruebas de los endpoints de la API y la ejecución de la suite automatizada de pruebas.
 
 🤖 Uso de IA
 
@@ -540,7 +574,7 @@ Manejo centralizado de errores.
 
 Swagger/OpenAPI.
 
-22 pruebas automatizadas.
+25 pruebas automatizadas.
 
 Vitest.
 
@@ -552,7 +586,7 @@ Variables de entorno para desarrollo y producción.
 
 Scripts SQL de configuración y datos iniciales.
 
-Deployment preparado para Railway.
+Deployment funcional en Railway.
 
 📄 Licencia
 
