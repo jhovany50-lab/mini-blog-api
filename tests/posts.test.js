@@ -35,7 +35,6 @@ describe('Posts API', () => {
   });
 
   it('POST /posts debería crear un post', async () => {
-
     const newPost = {
       title: `Post ${Date.now()}`,
       content: 'Contenido de prueba',
@@ -49,11 +48,56 @@ describe('Posts API', () => {
     expect(res.statusCode).toBe(201);
     expect(res.body).toHaveProperty('id');
     expect(res.body.title).toBe(newPost.title);
+  });
 
+  it('POST /posts debería establecer published en false si se omite', async () => {
+    const newPost = {
+      title: `Post sin published ${Date.now()}`,
+      content: 'Comprobación del valor por defecto',
+      author_id: 3
+    };
+
+    const res = await request(app)
+      .post('/posts')
+      .send(newPost);
+
+    expect(res.statusCode).toBe(201);
+    expect(res.body.published).toBe(false);
+  });
+
+  it('POST /posts debería respetar published en false', async () => {
+    const newPost = {
+      title: `Post published false ${Date.now()}`,
+      content: 'Comprobación de published false',
+      author_id: 3,
+      published: false
+    };
+
+    const res = await request(app)
+      .post('/posts')
+      .send(newPost);
+
+    expect(res.statusCode).toBe(201);
+    expect(res.body.published).toBe(false);
+  });
+
+  it('POST /posts debería respetar published en true', async () => {
+    const newPost = {
+      title: `Post published true ${Date.now()}`,
+      content: 'Comprobación de published true',
+      author_id: 3,
+      published: true
+    };
+
+    const res = await request(app)
+      .post('/posts')
+      .send(newPost);
+
+    expect(res.statusCode).toBe(201);
+    expect(res.body.published).toBe(true);
   });
 
   it('POST /posts debería responder 400 si el autor no existe', async () => {
-
     const newPost = {
       title: `Post ${Date.now()}`,
       content: 'Contenido de prueba',
@@ -66,11 +110,9 @@ describe('Posts API', () => {
 
     expect(res.statusCode).toBe(400);
     expect(res.body.error).toBe('El autor especificado no existe');
-
   });
 
   it('POST /posts debería responder 400 si faltan campos', async () => {
-
     const res = await request(app)
       .post('/posts')
       .send({
@@ -78,11 +120,9 @@ describe('Posts API', () => {
       });
 
     expect(res.statusCode).toBe(400);
-
   });
 
   it('PUT /posts/:id debería actualizar un post', async () => {
-
     const updatedPost = {
       title: `Actualizado ${Date.now()}`,
       content: 'Contenido actualizado',
@@ -96,11 +136,9 @@ describe('Posts API', () => {
     expect(res.statusCode).toBe(200);
     expect(res.body.title).toBe(updatedPost.title);
     expect(res.body.content).toBe(updatedPost.content);
-
   });
 
   it('PUT /posts/:id debería responder 400 si el autor no existe', async () => {
-
     const created = await request(app)
       .post('/posts')
       .send({
@@ -121,11 +159,9 @@ describe('Posts API', () => {
 
     expect(res.statusCode).toBe(400);
     expect(res.body.error).toBe('El autor especificado no existe');
-
   });
 
   it('PUT /posts/:id inexistente debería responder 404', async () => {
-
     const updatedPost = {
       title: 'No existe',
       content: 'Nada',
@@ -138,11 +174,9 @@ describe('Posts API', () => {
 
     expect(res.statusCode).toBe(404);
     expect(res.body.error).toBe('Post no encontrado');
-
   });
 
   it('DELETE /posts/:id debería eliminar un post', async () => {
-
     const created = await request(app)
       .post('/posts')
       .send({
@@ -156,17 +190,14 @@ describe('Posts API', () => {
 
     expect(res.statusCode).toBe(200);
     expect(res.body.message).toBe('Post eliminado correctamente');
-
   });
 
   it('DELETE /posts/:id inexistente debería responder 404', async () => {
-
     const res = await request(app)
       .delete('/posts/99999');
 
     expect(res.statusCode).toBe(404);
     expect(res.body.error).toBe('Post no encontrado');
-
   });
 
 });
